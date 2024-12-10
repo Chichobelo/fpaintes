@@ -1,0 +1,108 @@
+<div class="container">
+  <!-- Barra de búsqueda -->
+  <div class="header">
+    <h2>Lista de Fórmulas</h2>
+    <input
+      type="text"
+      class="form-control search-bar"
+      placeholder="Buscar fórmula..."
+      [(ngModel)]="busqueda"
+    />
+    <button class="btn btn-primary" (click)="abrirModal()">+ Nueva Fórmula</button>
+  </div>
+
+  <!-- Tabla de Fórmulas -->
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Ingrediente</th>
+          <th>Cantidad</th>
+          <th>Unidad</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let formula of filtrarFormulas(); let i = index">
+          <td>{{ formula.producto }}</td>
+          <td>
+            <ul>
+              <li *ngFor="let ingrediente of formula.ingredientes">
+                {{ ingrediente.nombre }}
+              </li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li *ngFor="let ingrediente of formula.ingredientes">
+                {{ ingrediente.cantidad }}
+              </li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li *ngFor="let ingrediente of formula.ingredientes">
+                {{ ingrediente.unidad }}
+              </li>
+            </ul>
+          </td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="editarFormula(i)">Editar</button>
+            <button class="btn btn-danger btn-sm" (click)="eliminarFormula(i)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" [class.open]="isModalOpen">
+    <div class="modal-content">
+      <button class="close" (click)="cerrarModal()">×</button>
+      <h3>Crear Fórmula</h3>
+
+      <label for="producto">Seleccionar Producto</label>
+      <select id="producto" class="form-control" [(ngModel)]="selectedProducto">
+        <option [value]="null" disabled>Selecciona un producto</option>
+        <option *ngFor="let producto of productos" [value]="producto.nombre">
+          {{ producto.nombre }}
+        </option>
+      </select>
+
+      <h4>Ingredientes</h4>
+      <table class="table">
+        <tr *ngFor="let ingrediente of ingredientes; let j = index">
+          <td>
+            <select class="form-control" [(ngModel)]="ingrediente.nombre">
+              <option [value]="null" disabled>Selecciona un componente</option>
+              <option *ngFor="let componente of componentes" [value]="componente.nombre">
+                {{ componente.nombre }}
+              </option>
+            </select>
+          </td>
+          <td>
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Cantidad"
+              [(ngModel)]="ingrediente.cantidad"
+            />
+          </td>
+          <td>
+            <select class="form-control" [(ngModel)]="ingrediente.unidad">
+              <option value="GR">GR</option>
+              <option value="ML">ML</option>
+            </select>
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="eliminarIngrediente(j)">Eliminar</button>
+          </td>
+        </tr>
+      </table>
+
+      <button class="btn btn-primary btn-sm" (click)="agregarIngrediente()">+ Agregar Ingrediente</button>
+      <button class="btn btn-success btn-sm" (click)="guardarFormula()">Guardar</button>
+    </div>
+  </div>
+</div>

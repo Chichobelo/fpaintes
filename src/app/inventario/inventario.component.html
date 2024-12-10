@@ -1,0 +1,162 @@
+<div class="inventory-management">
+  <div class="inventory-header">
+    <h1>Lista de componentes</h1>
+
+    <!-- Barra de búsqueda -->
+    <div class="toolbar">
+      <div class="search-container">
+        <!-- Input de búsqueda -->
+    <input
+    type="text"
+    [(ngModel)]="searchTerm"
+    (input)="filterData()"
+    placeholder="Buscar por nombre..."
+  />
+  <!-- Icono de búsqueda -->
+  <i class="fas fa-search search-icon"></i>
+      </div>
+
+      <button class="btn-new-component" (click)="openCreateModal()">
+        Crear nuevo componente
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabla de inventario -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre del Químico</th>
+          <th>Cantidad</th>
+          <th>Stock Actual</th>
+          <th>Stock Mínimo</th>
+          <th>Estado</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of getFilteredComponents()">
+          <td>{{ item.name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.stock }}</td>
+          <td>{{ item.minStock }}</td>
+          <td class="status">
+            <span
+              [ngClass]="{
+                'badge-sufficient': item.stock > item.minStock,
+                'badge-low': item.stock <= item.minStock
+              }"
+            >
+              {{ item.stock > item.minStock ? 'Suficiente' : 'Bajo' }}
+            </span>
+          </td>
+          <td>
+            <button class="btn-edit" (click)="editStock(item)">
+              Actualizar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal para editar un químico -->
+  <div *ngIf="selectedItem" class="modal">
+    <div class="modal-content">
+      <h2>Actualizar Inventario</h2>
+      <div class="form-group">
+        <label for="edit-name">Nombre del Componente</label>
+        <input
+          type="text"
+          [(ngModel)]="selectedItem.name"
+          id="edit-name"
+          placeholder="Ejemplo: T1"
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-quantity">Cantidad</label>
+        <input
+          type="text"
+          [(ngModel)]="selectedItem.quantity"
+          id="edit-quantity"
+          placeholder="Ejemplo: 250GR"
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-stock">Stock Actual</label>
+        <input
+          type="number"
+          [(ngModel)]="selectedItem.stock"
+          id="edit-stock"
+          placeholder="Ejemplo: 100"
+        />
+      </div>
+      <div class="form-group">
+        <label for="edit-minStock">Stock Mínimo</label>
+        <input
+          type="number"
+          [(ngModel)]="selectedItem.minStock"
+          id="edit-minStock"
+          placeholder="Ejemplo: 10"
+        />
+      </div>
+      <div class="form-actions">
+        <button class="btn-save" (click)="saveStock()">Guardar</button>
+        <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para crear un nuevo químico -->
+  <div *ngIf="showCreateModal" class="modal">
+    <div class="modal-content">
+      <h2>Crear Químico</h2>
+
+      <div class="form-group">
+        <label for="new-name">Nombre del componente</label>
+        <input
+          type="text"
+          id="new-name"
+          [(ngModel)]="stock.name"
+          placeholder="Ejemplo: R6"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="new-quantity">Cantidad</label>
+        <input
+          type="text"
+          id="new-quantity"
+          [(ngModel)]="stock.stock"
+          placeholder="Ejemplo: 200GR"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="new-stock">Stock Actual</label>
+        <input
+          type="number"
+          id="new-stock"
+          [(ngModel)]="stock.price"
+          placeholder="Ejemplo: 150"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="new-minStock">Stock Mínimo</label>
+        <input
+          type="number"
+          id="new-minStock"
+          [(ngModel)]="stock.stock"
+          placeholder="Ejemplo: 50"
+        />
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-save" (click)="saveStockProduct()">Guardar</button>
+        <button class="btn-cancel" (click)="closeCreateModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>

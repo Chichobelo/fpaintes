@@ -1,0 +1,149 @@
+<div class="container">
+  <h2 class="title">Lista de Usuarios</h2>
+
+  <!-- Barra de búsqueda y botón de nuevo usuario -->
+  <div class="toolbar">
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Buscar por nombre o documento"
+      [(ngModel)]="searchTerm"
+    />
+    <button class="btn new-user-btn" (click)="openNewUserForm()">+ Nuevo Usuario</button>
+  </div>
+
+  <!-- Tabla de usuarios -->
+  <div class="table-container">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Usuario</th>
+          <th>Documento</th>
+          <th>Nombre Completo</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredUsers(); let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ user.usuario }}</td>
+          <td>{{ user.documento }}</td>
+          <td>{{ user.nombre }}</td>
+          <td>
+            <span
+              class="status"
+              [class.active]="user.estado === 'Activo'"
+              [class.inactive]="user.estado !== 'Activo'"
+            >
+              {{ user.estado }}
+            </span>
+          </td>
+          <td>
+            <button class="btn edit-btn" (click)="editUser(user)">Editar</button>
+            <button class="btn delete-btn" (click)="deleteUser(user)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal para agregar/editar usuario -->
+  <div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>{{ isEditing ? 'Editar Usuario' : 'Agregar Usuario' }}</h3>
+        <button class="close-btn" (click)="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <!-- Campo Nombre y Apellido -->
+          <div class="form-row">
+            <input
+              type="text"
+              placeholder="Nombre y Apellido"
+              [(ngModel)]="currentUser.nombre"
+              name="nombre"
+              required
+            />
+          </div>
+
+          <!-- Campo Usuario -->
+          <div class="form-row">
+            <input
+              type="text"
+              placeholder="Usuario"
+              [(ngModel)]="currentUser.usuario"
+              name="usuario"
+              required
+            />
+          </div>
+
+          <!-- Campo Contraseña -->
+          <div class="form-row">
+            <input
+              type="password"
+              placeholder="Contraseña"
+              [(ngModel)]="currentUser.contrasena"
+              name="contrasena"
+              required
+            />
+          </div>
+
+          <!-- Campo Cargo (Operador/Administrador) -->
+          <div class="form-row">
+            <select [(ngModel)]="currentUser.cargo" name="cargo" required>
+              <option value="" disabled>Seleccionar Cargo</option>
+              <option value="Operador">Operador</option>
+              <option value="Administrador">Administrador</option>
+            </select>
+          </div>
+
+          <!-- Campo Estado (Activo/Inactivo) -->
+          <div class="form-row">
+            <select [(ngModel)]="currentUser.estado" name="estado" required>
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
+            </select>
+          </div>
+
+          <!-- Permisos del usuario -->
+          <div class="permissions">
+            <h4>Permisos</h4>
+            <div class="permissions-grid">
+              <label>
+                <input type="checkbox" [(ngModel)]="currentUser.permisos.perfil" /> Perfil
+              </label>
+              <label>
+                <input type="checkbox" [(ngModel)]="currentUser.permisos.productos" /> Productos
+              </label>
+              <label>
+                <input type="checkbox" [(ngModel)]="currentUser.permisos.informeProduccion" />
+                Informe de Producción
+              </label>
+              <label>
+                <input type="checkbox" [(ngModel)]="currentUser.permisos.crearComponente" />
+                Crear Componente
+              </label>
+              <label>
+                <input type="checkbox" [(ngModel)]="currentUser.permisos.configuracion" />
+                Configuración
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <!-- Botón Cancelar -->
+        <button class="btn cancel-btn" (click)="closeModal()">Cancelar</button>
+      
+        <!-- Botón Agregar -->
+        <button class="btn save-btn" (click)="saveUser()">
+          {{ isEditing ? 'Guardar Cambios' : 'Agregar' }}
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>

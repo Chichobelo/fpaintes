@@ -1,0 +1,46 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+<div>
+    <h1>Informe de Producción</h1>
+  
+    <!-- Contenedor de barra de búsqueda y botón -->
+    <div class="toolbar">
+      <!-- Barra de búsqueda -->
+      <div class="search-container">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="filterData()"
+          placeholder="Buscar producción..."
+        />
+        <i class="material-icons">search</i>
+      </div>
+  
+      <!-- Botón de imprimir reporte -->
+      <button (click)="printReport()">Imprimir Reporte</button>
+    </div>
+  
+    <!-- Tabla de datos -->
+    <table>
+      <thead>
+        <tr>
+          <th>ID/Nombre del Operador</th>
+          <th>Producto</th>
+          <th>Tipo de Empaque</th>
+          <th>Cantidad</th>
+          <th>Fecha de Creación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filteredData">
+          <td>{{ item.operador }}</td>
+          <td>{{ item.producto }}</td>
+          <td>{{ item.empaque }}</td>
+          <td>{{ item.cantidad }}</td>
+          <td>{{ item.fecha | date: 'd MMMM y' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

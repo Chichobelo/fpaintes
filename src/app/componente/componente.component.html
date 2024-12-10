@@ -1,0 +1,113 @@
+<div class="container">
+    <div class="card shadow-sm mt-4">
+      <div class="card-header bg-dark text-white">
+        <h2 class="text-center">Creación de Componentes</h2>
+      </div>
+      <div class="card-body">
+        <form>
+          <div class="form-group mb-3">
+            <label for="nombre" class="form-label">Nombre del Componente</label>
+            <input
+              id="nombre"
+              [(ngModel)]="nuevoComponente.nombre"
+              name="nombre"
+              class="form-control border-primary"
+              required
+              placeholder="Ejemplo: Producto A"
+            />
+          </div>
+  
+          <div class="form-group mb-3">
+            <label for="unidad" class="form-label">Unidad</label>
+            <select
+              id="unidad"
+              [(ngModel)]="nuevoComponente.unidad"
+              name="unidad"
+              class="form-select border-primary"
+              required
+            >
+              <option value="" disabled>Selecciona una unidad</option>
+              <option *ngFor="let unidad of unidades" [value]="unidad">{{ unidad }}</option>
+            </select>
+          </div>
+  
+          <div class="form-group mb-3">
+            <label for="cantidad" class="form-label">Cantidad</label>
+            <input
+              id="cantidad"
+              type="number"
+              [(ngModel)]="nuevoComponente.cantidad"
+              name="cantidad"
+              class="form-control border-primary"
+              required
+              placeholder="Ejemplo: 100"
+            />
+          </div>
+  
+          <div class="form-group mb-3">
+            <label for="costo" class="form-label">Costo (COP)</label>
+            <input
+              id="costo"
+              type="text"
+              [(ngModel)]="nuevoComponente.costo"
+              name="costo"
+              class="form-control border-primary"
+              required
+              placeholder="Ejemplo: $5000"
+            />
+          </div>
+  
+          <button
+            type="button"
+            class="btn btn-primary w-100 animated-btn btn-crear"
+            (click)="crearComponente()"
+          >
+            {{ editIndex !== null ? 'Actualizar Componente' : 'Crear Componente' }}
+          </button>
+        </form>
+      </div>
+    </div>
+  
+    <!-- Tabla -->
+    <div class="card shadow-sm mt-4">
+      <div class="card-header bg-dark text-white">
+        <h3 class="text-center">Componentes Creados</h3>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped table-hover text-center">
+          <thead class="table-dark">
+            <tr>
+              <th>Nombre</th>
+              <th>Unidad</th>
+              <th>Cantidad</th>
+              <th>Costo (COP)</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let componente of componentes; let i = index">
+              <td>{{ componente.nombre }}</td>
+              <td>{{ componente.unidad }}</td>
+              <td>{{ componente.cantidad }}</td>
+              <td>{{ componente.costo }}</td>
+              <td>
+                <button
+                  class="btn btn-sm btn-info btn-accion me-2"
+                  (click)="editarComponente(i)"
+                >
+                  Editar
+                </button>
+                <button
+                  class="btn btn-sm btn-danger btn-accion"
+                  (click)="eliminarComponente(i)"
+                >
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
